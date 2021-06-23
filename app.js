@@ -12,7 +12,14 @@ var app = express();
 var config = require('./config.dev');
 
 //Test the file
-console.log(config);
+//console.log(config);
+
+var mongoose = require('mongoose');
+
+
+//Connect to MongoDB
+mongoose.connect(config.mongodb, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+
 
 
 // view engine setup
