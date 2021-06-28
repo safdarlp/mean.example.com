@@ -26,7 +26,6 @@ var authApp = (function() {
     app.innerHTML=form;
   }
 
-  //~line 29
   function registrationForm(){
     var app = document.getElementById('app');
 
@@ -101,28 +100,34 @@ var authApp = (function() {
       xhr.onload = function(){
         let data = JSON.parse(xhr.response);
         if(data.success===true){
-        window.location.href = '/';
+          window.location.href = '/';
         }else{
-        document.getElementById('formMsg').style.display='block';
-  }
-
-        console.log(data);
+          document.getElementById('formMsg').style.display='block';
+        }
       }
     });
   }
 
   return {
     load: function(){
-      // loginForm();
-      registrationForm();
-      postRequest('registrationForm', '/api/auth/register');
-      // postRequest('loginForm', '/api/auth/login');
-      validate.registrationForm();
+
+      switch(window.location.hash){
+        case '#register':
+          registrationForm();
+          postRequest('registrationForm', '/api/auth/register');
+          validate.registrationForm();
+          break;
+
+        default:
+          loginForm();
+          postRequest('loginForm', '/api/auth/login');
+          break;
+      }
+
     }
   }
 
 })();
-
 
 var validate = (function() {
 
@@ -152,3 +157,8 @@ var validate = (function() {
 })();
 
 authApp.load();
+
+window.addEventListener("hashchange", function(){
+  authApp.load();
+});
+
