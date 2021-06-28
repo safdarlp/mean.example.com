@@ -4,10 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-//~line 7 after mongoose
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+var Users = require('./models/users');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -30,7 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//~line 32 before routes
+
 app.use(require('express-session')({
   //Define the session store
   store: new MongoStore({
@@ -50,7 +52,8 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-//~line 53
+passport.use(Users.createStrategy());
+
 passport.serializeUser(function(user, done){
   done(null,{
     id: user._id,
