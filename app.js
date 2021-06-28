@@ -3,34 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var app = express();
-//~line 10
 var apiUsersRouter = require('./routes/api/users');
 
+var app = express();
 
+//Call the config file
 var config = require('./config.dev');
 
-//Test the file
-//console.log(config);
-
-var mongoose = require('mongoose');
-
-
 //Connect to MongoDB
-mongoose.connect(config.mongodb, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
-
-
-
-
+mongoose.connect(config.mongodb, { useNewUrlParser: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-//~line 32
-app.use('/api/users', apiUsersRouter);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -40,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api/users', apiUsersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
