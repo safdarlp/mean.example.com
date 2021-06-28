@@ -6,6 +6,7 @@ var rename = require('gulp-rename');
 var concat = require('gulp-concat');
 var merge = require('merge-stream');
 var scss = require('gulp-sass');
+// var sass = require('gulp-sass')(require('sass'));
 
 gulp.task('build-main-css', function(){
 
