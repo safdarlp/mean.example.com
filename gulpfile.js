@@ -46,7 +46,7 @@ gulp.task('build-auth-js', function() {
   return merge(authApp);
 });
 
-//~line 49
+//Build users Javascript
 gulp.task('build-users-js', function() {
 
   var userApp = gulp.src([
@@ -57,6 +57,18 @@ gulp.task('build-users-js', function() {
   .pipe(gulp.dest('public/dist/js'));
 
   return merge(userApp);
+});
+
+//Build articles javascript
+gulp.task('build-articles-js', function () {
+  var articlesApp = gulp.src([
+    'src/js/articles.app.js',
+  ])
+    .pipe(concat('articles.app.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('public/dist/js'));
+
+    return merge(articlesApp);
 });
 
 //Recompile SCSS/JS on save
@@ -75,5 +87,6 @@ gulp.task('build-css', gulp.series('build-main-css'));
 gulp.task('build-js', gulp.series(
   'build-main-js',
   'build-auth-js',
-  'build-users-js'
+  'build-users-js',
+  'build-articles-js'
 ));
